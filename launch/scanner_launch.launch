@@ -1,14 +1,23 @@
 <launch>
  <arg name="use_new" default="true"/>
- <arg name="new_rviz_config_file" default="$(find scanner)/config/scanner_config.rviz"/>
+ <arg name="laser_include" default="true"/>
+ <arg name="use_sim_time" default="true"/>
+ <arg name="bag_file_name" value="glennan_5_basic_short"/>
+
  <arg name="new_filename" default="scanner_define.xacro"/>
  <arg name="new_filepath" default="$(find scanner)/urdf/$(arg new_filename)"/>
  
- 
+ <arg if="$(arg laser_include)" name="new_rviz_config_file" default="$(find scanner)/config/scanner_config_with_laser.rviz"/>
+ <arg unless="$(arg laser_include)" name="new_rviz_config_file" default="$(find scanner)/config/scanner_config.rviz"/>
  <include file="$(find navvis_description)/launch/display.launch">
    <arg if="$(arg use_new)" name="use_xacro" value="$(arg use_new)"/>
    <arg if="$(arg use_new)" name="rviz_config_file" value="$(arg new_rviz_config_file)"/>
    <arg if="$(arg use_new)" name="filename" value="$(arg new_filename)"/>
    <arg if="$(arg use_new)" name="file" value="$(arg new_filepath)"/>
  </include>
+ 
+
+  <group if="$(arg use_sim_time)">
+   <node pkg="rosbag" type="play" name="rosbag_play" output="screen" args="--clock $(find scanner)/$(arg bag_file_name).bag"/>
+  </group>
 </launch>
