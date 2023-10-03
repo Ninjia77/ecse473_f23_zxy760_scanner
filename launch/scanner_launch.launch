@@ -1,0 +1,14 @@
+<launch>
+ <arg name="use_new" default="true"/>
+ <arg name="new_rviz_config_file" default="$(find scanner)/config/scanner_config.rviz"/>
+ <arg name="new_filename" default="scanner_define.xacro"/>
+ <arg name="new_filepath" default="$(find scanner)/urdf/$(arg new_filename)"/>
+ 
+ 
+ <include file="$(find navvis_description)/launch/display.launch">
+   <arg if="$(arg use_new)" name="use_xacro" value="$(arg use_new)"/>
+   <arg if="$(arg use_new)" name="rviz_config_file" value="$(arg new_rviz_config_file)"/>
+   <arg if="$(arg use_new)" name="filename" value="$(arg new_filename)"/>
+   <arg if="$(arg use_new)" name="file" value="$(arg new_filepath)"/>
+ </include>
+</launch>
